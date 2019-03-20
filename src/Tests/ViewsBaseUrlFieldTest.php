@@ -87,7 +87,7 @@ class ViewsBaseUrlFieldTest extends WebTestBase {
       $image = current($this->drupalGetTestFiles('image'));
       $edit = [
         'title[0][value]' => $title,
-        'files[field_image_0]' => drupal_realpath($image->uri),
+        'files[field_image_0]' => \Drupal::service('file_system')->realpath($image->uri),
       ];
       $this->drupalPostForm('node/add/article', $edit, t('Save'));
       $this->drupalPostForm(NULL, ['field_image[0][alt]' => $title], t('Save'));
