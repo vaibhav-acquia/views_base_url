@@ -1,4 +1,4 @@
-name: 'Views base url'
+name: 'Views Base URL'
 description: 'Global views field that provides site''s base url'
 core: 8.x
 dependencies:

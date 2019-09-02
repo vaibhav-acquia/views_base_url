@@ -1,4 +1,4 @@
-name: 'Views base url test'
+name: 'Views Base URL Test'
 description: 'Test cases for views base url module'
 core: 8.x
 type: module
