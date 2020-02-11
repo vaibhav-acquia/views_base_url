@@ -1,17 +1,22 @@
 <?php
 
-namespace Drupal\views_base_url\Tests;
+namespace Drupal\Tests\views_base_url\Functional;
 
-use Drupal\simpletest\WebTestBase;
 use Drupal\Component\Utility\Random;
 use Drupal\Core\Url;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\TestFileCreationTrait;
 
 /**
  * Basic test for views base url.
  *
  * @group views_base_url
  */
-class ViewsBaseUrlFieldTest extends WebTestBase {
+class ViewsBaseUrlFieldTest extends BrowserTestBase {
+
+  use TestFileCreationTrait {
+    getTestFiles as drupalGetTestFiles;
+  }
 
   /**
    * A user with various administrative privileges.
@@ -64,6 +69,13 @@ class ViewsBaseUrlFieldTest extends WebTestBase {
   ];
 
   /**
+   * Definition of File System Interface.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -78,7 +90,8 @@ class ViewsBaseUrlFieldTest extends WebTestBase {
     $path_alias_storage = $this->container->get('path.alias_storage');
     /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
     $this->pathAliasManager = $this->container->get('path.alias_manager');
-
+    /** @var \Drupal\Core\File\FileSystemInterface $file_system */;
+    $this->fileSystem = $this->container->get('file_system');
     // Create $this->nodeCount nodes.
     $this->drupalLogin($this->adminUser);
     for ($i = 1; $i <= $this->nodeCount; $i++) {
@@ -87,7 +100,7 @@ class ViewsBaseUrlFieldTest extends WebTestBase {
       $image = current($this->drupalGetTestFiles('image'));
       $edit = [
         'title[0][value]' => $title,
-        'files[field_image_0]' => \Drupal::service('file_system')->realpath($image->uri),
+        'files[field_image_0]' => $this->fileSystem->realpath($image->uri),
       ];
       $this->drupalPostForm('node/add/article', $edit, t('Save'));
       $this->drupalPostForm(NULL, ['field_image[0][alt]' => $title], t('Save'));
