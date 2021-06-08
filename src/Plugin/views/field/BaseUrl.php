@@ -3,7 +3,7 @@
 namespace Drupal\views_base_url\Plugin\views\field;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Path\AliasManager;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 use Drupal\Core\Url;
@@ -22,14 +22,14 @@ class BaseUrl extends FieldPluginBase {
   /**
    * Definition of path alias manager.
    *
-   * @var \Drupal\Core\Path\AliasManager
+   * @var \Drupal\path_alias\AliasManager
    */
   protected $pathAliasManager;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AliasManager $pathAliasManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AliasManagerInterface $pathAliasManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->pathAliasManager = $pathAliasManager;
   }
@@ -42,7 +42,7 @@ class BaseUrl extends FieldPluginBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('path.alias_manager')
+      $container->get('path_alias.manager')
     );
   }
 

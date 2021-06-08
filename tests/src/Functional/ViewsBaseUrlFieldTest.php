@@ -53,9 +53,16 @@ class ViewsBaseUrlFieldTest extends BrowserTestBase {
   protected $nodes;
 
   /**
+   * Path alias storage.
+   *
+   * @var \Drupal\path_alias\PathAliasStorage
+   */
+  protected $pathAliasStorage;
+
+  /**
    * Path alias manager.
    *
-   * @var \Drupal\Core\Path\AliasManagerInterface
+   * @var \Drupal\path_alias\AliasManager
    */
   protected $pathAliasManager;
 
@@ -86,11 +93,11 @@ class ViewsBaseUrlFieldTest extends BrowserTestBase {
     ]);
     $random = new Random();
 
-    /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
-    $path_alias_storage = $this->container->get('path.alias_storage');
-    /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
-    $this->pathAliasManager = $this->container->get('path.alias_manager');
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */;
+    /** @var \Drupal\path_alias\PathAliasStorage $pathAliasStorage */
+    $this->pathAliasStorage = $this->container->get('entity_type.manager')->getStorage('path_alias');
+    /** @var \Drupal\path_alias\AliasManager $pathAliasManager */
+    $this->pathAliasManager = $this->container->get('path_alias.manager');
+    /** @var \Drupal\Core\File\FileSystemInterface $fileSystem */;
     $this->fileSystem = $this->container->get('file_system');
     // Create $this->nodeCount nodes.
     $this->drupalLogin($this->adminUser);
@@ -106,7 +113,11 @@ class ViewsBaseUrlFieldTest extends BrowserTestBase {
       $this->drupalPostForm(NULL, ['field_image[0][alt]' => $title], t('Save'));
 
       $this->nodes[$i] = $this->drupalGetNodeByTitle($title);
-      $path_alias_storage->save('/node/' . $this->nodes[$i]->id(), "/content/$title");
+      $path_alias = $this->pathAliasStorage->create([
+        'path' => '/node/' . $this->nodes[$i]->id(),
+        'alias' => "/content/" . $title,
+      ]);
+      $path_alias->save();
     }
     $this->drupalLogout();
   }
