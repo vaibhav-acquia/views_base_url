@@ -4,7 +4,7 @@
     "type": "drupal-module",
     "homepage": "https://www.drupal.org/project/views_base_url",
     "require": {
-        "drupal/core": ">=10"
+        "drupal/core": "^10 || ^11"
     },
     "license": "GPL-2.0-or-later"
 }
