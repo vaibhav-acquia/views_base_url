@@ -14,6 +14,11 @@ use Drupal\Tests\TestFileCreationTrait;
  */
 class ViewsBaseUrlFieldTest extends BrowserTestBase {
 
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
   use TestFileCreationTrait {
     getTestFiles as drupalGetTestFiles;
   }
