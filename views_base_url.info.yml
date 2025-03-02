@@ -1,6 +1,5 @@
 name: 'Views Base URL'
 description: 'Global views field that provides site''s base url'
-core: 8.x
 core_version_requirement: ^10 || ^11
 dependencies:
   - drupal:views
